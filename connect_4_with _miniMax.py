@@ -1,12 +1,13 @@
-import numpy as np
-import pygame as c4
+import math
 import random
 import sys
-import math
 
-BLUE = (0, 0, 255) 
-RED = (255, 0, 0) 
-YELLOW = (255, 255, 0) 
+import numpy as np
+import pygame as c4
+
+BLUE = (0, 0, 255)
+RED = (255, 0, 0)
+YELLOW = (255, 255, 0)
 BLACK = (0,0,0)
 
 
@@ -24,64 +25,64 @@ SCORE_WINDOW_LENGTH= 4
 
 
 def create_board():
-		board = np.zeros((ROWS,COLUMNS))
-		return board
+    board = np.zeros((ROWS,COLUMNS))
+    return board
 
 def drop_piece(board, row, col, piece):
-	board[row][col] = piece
+    board[row][col] = piece
 
 def is_valid_location(board, col):
-	return board[ROWS-1][col] == 0
+    return board[ROWS-1][col] == 0
 
 def get_next_open_row(board, col):
-	#Goes from bottom of board upwards to find the first open slot
-	for r in range(ROWS):
-		if board[r][col]==0:
-			return r
+    #Goes from bottom of board upwards to find the first open slot
+    for r in range(ROWS):
+        if board[r][col]==0:
+            return r
 
 def print_board(board):
-	print(np.flipud(board))
+   print (np.flipud(board))
 
 def check_horitontal(board, piece):
-	#check all horizontal locations
-	for c in range(COLUMNS-3):
-		for r in range(ROWS):
-			if board[r][c] == piece and board[r][c+1] == piece and board[r][c+2] == piece and board[r][c+3] == piece:
-				return True
+    #check all horizontal locations
+    for c in range(COLUMNS-3):
+        for r in range(ROWS):
+            if board[r][c] == piece and board[r][c+1] == piece and board[r][c+2] == piece and board[r][c+3] == piece:
+                return True
 
 def check_vertical(board, piece):
-	#check all vertical locations
-	for c in range(COLUMNS):
-		for r in range(ROWS-3):
-			if board[r][c] == piece and board[r+1][c] == piece and board[r+2][c] == piece and board[r+3][c] == piece:
-				return True
+    #check all vertical locations
+    for c in range(COLUMNS):
+        for r in range(ROWS-3):
+            if board[r][c] == piece and board[r+1][c] == piece and board[r+2][c] == piece and board[r+3][c] == piece:
+                return True
 
 def check_up_diagonal(board, piece):
-	#check all upward diagonal locations
-	for c in range(COLUMNS-3):
-		for r in range(ROWS-3):
-			if board[r][c] == piece and board[r+1][c+1] == piece and board[r+2][c+2] == piece and board[r+3][c+3] == piece:
-				return True
+    #check all upward diagonal locations
+    for c in range(COLUMNS-3):
+        for r in range(ROWS-3):
+            if board[r][c] == piece and board[r+1][c+1] == piece and board[r+2][c+2] == piece and board[r+3][c+3] == piece:
+                return True
 
 def check_down_diagonal(board, piece):
-	#check all downward diagonal locations
-	for c in range(COLUMNS-3):
-		for r in range(3, ROWS):
-			if board[r][c] == piece and board[r-1][c-1] == piece and board[r-2][c-2] == piece and board[r-3][c-3] == piece:
-				return True
+    #check all downward diagonal locations
+    for c in range(COLUMNS-3):
+        for r in range(3, ROWS):
+            if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r-3][c+3] == piece:
+                return True
 
 
 def winning_move(board, piece):
-	if (check_horitontal(board, piece)):
-		return True
-	elif (check_vertical(board, piece)):
-		return True
-	elif (check_up_diagonal(board, piece)):
-		return True
-	elif (check_down_diagonal(board, piece)):
-		return True
-	else:
-		return False
+    if (check_horitontal(board, piece)):
+        return True
+    elif (check_vertical(board, piece)):
+        return True
+    elif (check_up_diagonal(board, piece)):
+        return True
+    elif (check_down_diagonal(board, piece)):
+        return True
+    else:
+        return False
 
 def evaluate_window(score_window, piece):
 
@@ -119,7 +120,7 @@ def disk_Score(board, piece):
 
         # score vertical
     for v in range(COLUMNS):
-        col_array = [int(i) for i in list(board[v, :])]
+        col_array = [int(i) for i in list(board[:, v])]
         for h in range(ROWS-3):
             score_Window = col_array[h:h + SCORE_WINDOW_LENGTH]
             score += evaluate_window(score_Window, piece)
@@ -139,7 +140,7 @@ def disk_Score(board, piece):
 
 
 def is_last_move(board):
-	return winning_move(board, PLAY_DISK) or winning_move(board, AI_DISK) or len(get_open_spots(board)) == 0
+    return winning_move(board, PLAY_DISK) or winning_move(board, AI_DISK) or len(get_open_spots(board)) == 0
 
 def minimax(board, depth, alpha, beta, maxPlay):
     # this section might not be necessary or will need to altered more
@@ -148,11 +149,13 @@ def minimax(board, depth, alpha, beta, maxPlay):
     if depth == 0 or last_Move:
         if last_Move:
             if winning_move(board, AI_DISK):
-                return (None, 999)  # so it knows its the best move
+                return (None, 999999999999)  # so it knows its the best move
             elif winning_move(board, PLAY_DISK):
-                return (None, -999)  # so it knows it lost
+                return (None, -999999999999)  # so it knows it lost
             else:
-                return (None, disk_Score(board, AI_DISK))
+                return (None,0)
+        else:
+            return (None, disk_Score(board, AI_DISK))
     # start of min max for player
     if maxPlay:
         value = -math.inf
@@ -161,7 +164,7 @@ def minimax(board, depth, alpha, beta, maxPlay):
             horiz = get_next_open_row(board, vert)
             state_copy = board.copy()
             drop_piece(state_copy, horiz, vert, AI_DISK)
-            new_State = minimax(state_copy, depth - 1, alpha, beta, False)[1]
+            new_State = minimax(state_copy, depth-1, alpha, beta, False)[1]
             if new_State > value:
                 value = new_State
                 column = vert
@@ -178,7 +181,7 @@ def minimax(board, depth, alpha, beta, maxPlay):
             horiz = get_next_open_row(board, vert)
             state_copy = board.copy()
             drop_piece(state_copy, horiz, vert, PLAY_DISK)
-            new_State = minimax(state_copy, depth - 1, alpha, beta, True)[1]
+            new_State = minimax(state_copy, depth-1, alpha, beta, True)[1]
             if new_State < value:
                 value = new_State
                 column = vert
@@ -196,7 +199,7 @@ def get_open_spots(board):
 
 def best_Move(board, piece):
     valid_spot = get_open_spots(board)
-    winning_score = -10000
+    winning_score = -99999
     best_column = random.choice(valid_spot)
     for c in valid_spot:
         horiz = get_next_open_row(board, c)
@@ -211,25 +214,26 @@ def best_Move(board, piece):
 
 
 def draw_board(board):
-	for c in range(COLUMNS):
-		for r in range(ROWS):
-			c4.draw.rect(screen, BLUE, (c*SQUARE_SIZE, r*SQUARE_SIZE+SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
-			c4.draw.circle(screen, BLACK, (int(c*SQUARE_SIZE+SQUARE_SIZE/2), int(r*SQUARE_SIZE+SQUARE_SIZE+SQUARE_SIZE/2)), RADIUS)
-			
-	for c in range(COLUMNS):
-		for r in range(ROWS):
-			if board[r][c]==1:
-				c4.draw.circle(screen, RED, (int(c*SQUARE_SIZE+SQUARE_SIZE/2), height-int(r*SQUARE_SIZE+SQUARE_SIZE/2)), RADIUS)
-			elif board[r][c]==2:
-				c4.draw.circle(screen, YELLOW, (int(c*SQUARE_SIZE+SQUARE_SIZE/2), height-int(r*SQUARE_SIZE+SQUARE_SIZE/2)), RADIUS)		
-			
-	c4.display.update()
-				
-			
-		
+    for c in range(COLUMNS):
+        for r in range(ROWS):
+            c4.draw.rect(screen, BLUE, (c*SQUARE_SIZE, r*SQUARE_SIZE+SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE))
+            c4.draw.circle(screen, BLACK, (int(c*SQUARE_SIZE+SQUARE_SIZE/2), int(r*SQUARE_SIZE+SQUARE_SIZE+SQUARE_SIZE/2)), RADIUS)
+
+    for c in range(COLUMNS):
+        for r in range(ROWS):
+            if board[r][c]==PLAY_DISK:
+                c4.draw.circle(screen, RED, (int(c*SQUARE_SIZE+SQUARE_SIZE/2), height-int(r*SQUARE_SIZE+SQUARE_SIZE/2)), RADIUS)
+            elif board[r][c]==AI_DISK:
+                c4.draw.circle(screen, YELLOW, (int(c*SQUARE_SIZE+SQUARE_SIZE/2), height-int(r*SQUARE_SIZE+SQUARE_SIZE/2)), RADIUS)
+
+    c4.display.update()
+
+
+
 board = create_board()
+print_board(board)
 game_over = False
-turn = 0
+#turn = 0
 
 
 #initializing connect4 board
@@ -244,54 +248,68 @@ size = (width, height)
 screen = c4.display.set_mode(size)
 draw_board(board)
 c4.display.update()
-
+turn = random.randint(0, 1)
+font = c4.font.Font(None, 48)
 while not game_over:
-	for event in c4.event.get():
-		if event.type== c4.QUIT:
-			sys.exit()
 
-		if event.type == c4.MOUSEMOTION:
-			c4.draw.rect(screen, BLACK, (0, 0, width, SQUARE_SIZE))
-			posx = event.pos[0]
-			if turn == 0:
-				c4.draw.circle(screen, RED, (posx, int(SQUARE_SIZE/2)), RADIUS)
-			else:
-				c4.draw.circle(screen, YELLOW, (posx, int(SQUARE_SIZE/2)), RADIUS)
-			c4.display.update()
+        for event in c4.event.get():
+            if event.type== c4.QUIT:
+                sys.exit()
 
-		if event.type == c4.MOUSEBUTTONDOWN:
-			posx = event.pos[0]
-			col = int(math.floor(posx/SQUARE_SIZE))
-			#Ask for player 1 input
-			if turn== PLAYER:
-				
-				if is_valid_location(board, col):
-					row = get_next_open_row(board, col)
-					drop_piece(board, row, col, 1)
-					if winning_move(board, 1):
-						print("Player 1 wins")
-						game_over = True
+            if event.type == c4.MOUSEMOTION:
+                c4.draw.rect(screen, BLACK, (0, 0, width, SQUARE_SIZE))
+                posx = event.pos[0]
+                if turn == 0:
+                    c4.draw.circle(screen, RED, (posx, int(SQUARE_SIZE/2)), RADIUS)
 
-					turn += 1
-					turn = turn % 2
+            c4.display.update()
 
-					print_board(board)
-					draw_board(board)
-			
-			#Ask for player 2 input
-			else:
-				col, ai_alg_Score = minimax(board, 5,-math.inf, math.inf, True)
+            if event.type == c4.MOUSEBUTTONDOWN:
+                c4.draw.rect(screen, BLACK, (0, 0, width, SQUARE_SIZE))
 
-				if is_valid_location(board, col):
-					row = get_next_open_row(board, col)
-					drop_piece(board, row, col, AI_DISK)
-					if winning_move(board, AI_DISK):
-						print("Player 2 wins")
-						game_over = True
+                #Ask for player 1 input
+                if turn== 0:
+                    posx = event.pos[0]
+                    col = int(math.floor(posx / SQUARE_SIZE))
 
-			turn+=1
-			turn = turn%2 
-			
-			draw_board(board)
-			
-print("Game Over")
+                    if is_valid_location(board, col):
+                        row = get_next_open_row(board, col)
+                        drop_piece(board, row, col, PLAY_DISK)
+                        if winning_move(board, PLAY_DISK):
+                            text = font.render("Player Wins",1,RED)
+                            screen.blit(text, (60, 30))
+                            game_over = True
+
+                        turn += 1
+                        turn = turn % 2
+                        print_board(board)
+                        draw_board(board)
+
+
+
+
+
+
+        if turn == 1 and not game_over:
+
+            col, ai_alg_Score = minimax(board, 5, -math.inf, math.inf, True)
+
+            if is_valid_location(board, col):
+                row = get_next_open_row(board, col)
+                drop_piece(board, row, col, AI_DISK)
+
+                if winning_move(board, AI_DISK):
+                    text = font.render("A.I. Wins", 1, YELLOW)
+                    screen.blit(text, (60, 30))
+                    game_over = True
+
+                print_board(board)
+                draw_board(board)
+
+                turn += 1
+                turn = turn % 2
+
+
+        if game_over:
+            
+            c4.time.wait(5000)
