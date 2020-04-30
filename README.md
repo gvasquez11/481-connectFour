@@ -1,30 +1,30 @@
 # 481-connectFour
 Project for CPSC-481
 
-Team Members\n
-Greg Vasquez\n
-Jake Lawrence\n
-Josh Roberts\n
-Jason Elrich\n
+Team Members<br/>
+Greg Vasquez<br/>
+Jake Lawrence<br/>
+Josh Roberts<br/>
+Jason Elrich<br/>
 
 How to run:
-Download file and place in a directory of your choosing. 
-Navigate to that directory in terminal
-Make sure your have the following libraries downloaded to your computer
-  -numpy
-  -pygame
-Run the python file and try to beat our AI
-
-
-File Decription:
-The only file we have is the main connect4_with_AI file which contains all the code for the project. 
-
-External Libraries used:
-  -numpy 
-  -pygame
-  -sys
-  -math
-  -random
+Download file and place in a directory of your choosing. <br/>
+Navigate to that directory in terminal<br/>
+Make sure your have the following libraries downloaded to your computer<br/>
+  -numpy<br/>
+  -pygame<br/>
+Run the python file and try to beat our AI<br/>
+<br/>
+<br/>
+File Decription:<br/>
+The only file we have is the main connect4_with_AI file which contains all the code for the project. <br/>
+<br/>
+External Libraries used:<br/>
+  -numpy <br/>
+  -pygame<br/>
+  -sys<br/>
+  -math<br/>
+  -random<br/>
 
 
 
