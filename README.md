@@ -1,11 +1,11 @@
 # 481-connectFour
 Project for CPSC-481
 
-Team Members
-Greg Vasquez
-Jake Lawrence
-Josh Roberts
-Jason Elrich
+Team Members\n
+Greg Vasquez\n
+Jake Lawrence\n
+Josh Roberts\n
+Jason Elrich\n
 
 How to run:
 Download file and place in a directory of your choosing. 
