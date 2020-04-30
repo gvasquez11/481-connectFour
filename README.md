@@ -7,7 +7,8 @@ Jake Lawrence<br/>
 Josh Roberts<br/>
 Jason Elrich<br/>
 <br/>
-###### How to run:<br/>
+###### How to run:
+<br/>
 Download file and place in a directory of your choosing. <br/>
 Navigate to that directory in terminal<br/>
 Make sure your have the following libraries downloaded to your computer<br/>
