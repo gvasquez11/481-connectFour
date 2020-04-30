@@ -21,7 +21,8 @@ Run the python file and try to beat our AI<br/>
 ###### File Decription:<br/>
 The only file we have is the main connect4_with_AI file which contains all the code for the project. <br/>
 <br/>
-###### External Libraries used:<br/>
+###### External Libraries used:
+<br/>
   -numpy <br/>
   -pygame<br/>
   -sys<br/>
