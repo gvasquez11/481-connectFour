@@ -1,13 +1,13 @@
 # 481-connectFour
-Project for CPSC-481
-
+Project for CPSC-481<br/>
+<br/>
 Team Members<br/>
 Greg Vasquez<br/>
 Jake Lawrence<br/>
 Josh Roberts<br/>
 Jason Elrich<br/>
-
-How to run:
+<br/>
+How to run:<br/>
 Download file and place in a directory of your choosing. <br/>
 Navigate to that directory in terminal<br/>
 Make sure your have the following libraries downloaded to your computer<br/>
