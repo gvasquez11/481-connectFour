@@ -1,7 +1,8 @@
 # 481-connectFour
 ## Project for CPSC-481<br/>
 <br/>
-###### Team Members<br/>
+###### Team Members
+<br/>
 Greg Vasquez<br/>
 Jake Lawrence<br/>
 Josh Roberts<br/>
